@@ -1,7 +1,7 @@
 # Deep-Learning-IIT-Ropar
 
 ## Credits & Disclaimer
-This repository contains my personal notes and solutions of assignments for the **Deep Learning** course offered by **IIT Ropar** via **SWAYAM-NPTEL**. It also includes set of 4 mock tests (keeping the actual exam in mind ).You can download the HTML file and simply run it .
+This repository contains my personal notes and solutions of assignments for the **Deep Learning** course offered by **IIT Ropar** via **SWAYAM-NPTEL**. It also includes set of 4 mock tests (keeping the actual exam in mind ).To try the mock tests , you can download the HTML file and simply run it .
 
 * **Course Instructors:** Prof. Mitesh M. Khapra (IIT Madras) & Prof. Sudarshan Iyengar (IIT Ropar).  
 * **Official Platform:** [NPTEL / SWAYAM](https://onlinecourses.nptel.ac.in/)
