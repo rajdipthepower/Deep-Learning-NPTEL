@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deep Learning Mock Tests</title>
+<style>
+:root{--bg:#f7f7f4;--cd:#fff;--tx:#1d1d1b;--mu:#6b6b66;--ac:#2f5fd0;--ok:#1e8449;--no:#c0392b;--bd:#dcdcd5;--fl:#d68910;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--cd:#222428;--tx:#ececea;--mu:#9a9a95;--ac:#7aa2ff;--ok:#4cc38a;--no:#ff7b6b;--bd:#35373d;--fl:#f0b44c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17181b;--cd:#222428;--tx:#ececea;--mu:#9a9a95;--ac:#7aa2ff;--ok:#4cc38a;--no:#ff7b6b;--bd:#35373d;--fl:#f0b44c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+#app{max-width:760px;margin:0 auto;padding:14px}
+h1{font-size:1.4rem;margin:8px 0}.mu{color:var(--mu);font-size:.9rem}
+.cd{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
+button{font:inherit;color:var(--tx);background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:9px 14px;margin:3px 4px 3px 0;cursor:pointer}
+button.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+.opt{display:block;width:100%;text-align:left;margin:7px 0;padding:11px 13px}
+.opt.sel{border-color:var(--ac);box-shadow:inset 0 0 0 2px var(--ac)}
+.opt.ok{border-color:var(--ok);box-shadow:inset 0 0 0 2px var(--ok)}
+.opt.no{border-color:var(--no);box-shadow:inset 0 0 0 2px var(--no)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:8px 0}
+.bar b{font-variant-numeric:tabular-nums;font-size:1.15rem}
+.pal{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:6px;margin:12px 0}
+.pal button{margin:0;padding:8px 0}.pal .dn{background:var(--ac);color:#fff;border-color:var(--ac)}
+.pal .fg{border-color:var(--fl);box-shadow:inset 0 0 0 2px var(--fl)}.pal .cur{outline:2px solid var(--tx)}
+.q{font-weight:600}.row{display:flex;flex-wrap:wrap}.tag{font-size:.75rem;border:1px solid var(--bd);border-radius:6px;padding:1px 6px;margin-left:6px;color:var(--mu)}
+.ex{font-size:.92rem;color:var(--mu);margin-top:8px}.big{font-size:2rem;font-weight:700}
+table{border-collapse:collapse}td,th{padding:4px 12px 4px 0;text-align:left}
+.msg{font-size:1.1rem;font-weight:600;margin:6px 0 10px}.hero{background:linear-gradient(135deg,var(--ac),#8e44ad);color:#fff;border:0;border-radius:16px}.hero .mu{color:#ffffffcc}.prog{height:6px;background:var(--bd);border-radius:6px;overflow:hidden;margin:2px 0 8px}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),#8e44ad);transition:width .3s}h1{background:linear-gradient(90deg,var(--ac),#8e44ad);-webkit-background-clip:text;background-clip:text;color:transparent}.cd{box-shadow:0 2px 10px #0000000d}@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}.big{animation:pop .6s}
+</style></head><body><div id="app"></div>
+<script>
+const T=[{id:"m1",name:"Mock 1: Optimizers, Initialization & Embeddings",mins:60,cases:[
+{t:"Case Study 1: Momentum vs NAG on a simple loss",x:"A team minimizes L(w) = (w − 6)², so the gradient is g = 2(w − 6). Training starts at w₀ = 0 with learning rate η = 0.1, momentum γ = 0.9 and v₀ = 0. Momentum uses v_t = γv_{t−1} + ηg_t and w_t = w_{t−1} − v_t. NAG instead evaluates the gradient at the look-ahead point w_{t−1} − γv_{t−1}.",q:[
+["E","What is v₁ after the first momentum step?",["−1.2","−12","1.2","−0.12"],0,"g = 2(0 − 6) = −12, so v₁ = 0.9(0) + 0.1(−12) = −1.2 and w₁ = 1.2."],
+["M","What is w₂ after the second momentum step?",["3.24","2.16","2.40","1.20"],0,"At w₁ = 1.2, g = −9.6, v₂ = 0.9(−1.2) + 0.1(−9.6) = −2.04, so w₂ = 1.2 + 2.04 = 3.24. Plain GD would only reach 2.16."],
+["H","At step 2 (from w₁ = 1.2, v₁ = −1.2), what gradient does NAG use?",["−7.44","−9.60","−12.0","−6.00"],0,"Look-ahead point = 1.2 − 0.9(−1.2) = 2.28, so g = 2(2.28 − 6) = −7.44. It is smaller than −9.6 because the look-ahead point is closer to the minimum."],
+["M","Why does NAG usually oscillate less than classical momentum?",["Its gradient is taken at the look-ahead point, so an overshoot is sensed earlier","It removes the momentum term near the minimum","It uses a larger learning rate","It uses second-derivative information"],0,"Looking ahead lets NAG correct its course sooner, giving smaller oscillations and shorter U-turns."],
+["E","If γ = 0, the momentum update becomes:",["Plain gradient descent, w ← w − ηg","A constant step of size η","An update that ignores the gradient","AdaGrad"],0,"With γ = 0, v_t = ηg_t, which is vanilla GD."]]},
+{t:"Case Study 2: Adaptive learning rates for dense vs sparse weights",x:"A model has a dense weight w_a and a sparse weight w_b. AdaGrad uses r_t = r_{t−1} + g² and step = ηg/√r_t with η = 1 (ε ignored). Gradients over the first four steps: w_a: 2, 2, 2, 2. w_b: 0, 0, 0, 2.",q:[
+["E","What is the AdaGrad step for w_b at step 4?",["1.0","0.5","2.0","0.25"],0,"r = 0+0+0+4 = 4, √r = 2, step = 1·2/2 = 1.0."],
+["E","What is the AdaGrad step for w_a at step 4?",["0.5","1.0","2.0","0.25"],0,"r = 4×4 = 16, √r = 4, step = 2/4 = 0.5."],
+["M","Why does w_b get a larger step than w_a at step 4 even though both gradients equal 2?",["Its accumulated squared gradient is smaller, so the denominator is smaller","It was given a larger learning rate by hand","AdaGrad multiplies sparse gradients by momentum","Its gradient is larger"],0,"AdaGrad divides by √(sum of past g²). Rarely updated parameters keep a small denominator and get bigger steps."],
+["M","In RMSProp with β = 0.9, w_a has r_{t−1} = 16 and g = 2. What is r_t?",["14.8","20","14.4","1.6"],0,"r_t = 0.9(16) + 0.1(4) = 14.4 + 0.4 = 14.8. AdaGrad would give 20 because it never decays the history."],
+["H","Adam's first step: g₁ = 5, β₁ = 0.9, β₂ = 0.999, η = 0.01, m₀ = v₀ = 0, ε ignored. What is the step η·m̂₁/√v̂₁?",["0.01","0.032","0.05","0.001"],0,"m₁ = 0.5, v₁ = 0.025. Bias correction: m̂₁ = 0.5/0.1 = 5, v̂₁ = 0.025/0.001 = 25. Step = 0.01·5/5 = 0.01. Without correction it would be about 0.032."]]},
+{t:"Case Study 3: Initialization audit of a 6-layer network",x:"A 6-layer feedforward network is audited for training problems. Every neuron has n = 100 incoming connections. Inputs have variance 1. The team studies how weight initialization affects activations and gradients.",q:[
+["E","What is the He initialization variance Var(w) for n = 100?",["0.02","0.01","0.2","0.14"],0,"He uses 2/n = 0.02 (std ≈ 0.14). Xavier would be 1/n = 0.01."],
+["M","All weights in a hidden layer are set to the same nonzero constant. What happens?",["Units in that layer compute identical outputs and get identical gradients, so they stay identical forever","Each unit specializes because inputs differ","Gradients vanish immediately","The network trains faster because the scale is controlled"],0,"Symmetry is never broken: the layer behaves like one neuron. Weights must be random."],
+["M","Weights are drawn with a very small standard deviation (0.001) in a tanh network. After several layers:",["Activations shrink toward 0, so gradients for early layers become tiny","Activations saturate at ±1","Activations explode","All neurons become identical"],0,"n·Var(w) ≪ 1 shrinks the signal each layer. Since ∇w is proportional to the input activation, gradients vanish."],
+["H","Ignoring nonlinearity, every weight has Var(w) = 0.02. Using Var(s_k) = [n·Var(w)]^k · Var(x), what is the pre-activation variance after k = 5 layers?",["32","10","2","0.03"],0,"n·Var(w) = 100·0.02 = 2, and 2⁵ = 32. A factor above 1 makes the signal explode. Xavier aims for exactly 1."],
+["M","In a mini-batch a neuron's pre-activations are 2, 4, 6, 8 (γ = 1, β = 0, ε ignored). The normalized value of 8 is about:",["1.34","3.00","1.50","0.60"],0,"Mean = 5, variance = (9+1+1+9)/4 = 5, so (8 − 5)/√5 ≈ 1.34."]]},
+{t:"Case Study 4: Word vectors from a toy corpus",x:"Corpus: 'cats chase mice', 'dogs chase cats', 'mice eat cheese'. Vocabulary: [cats, chase, mice, dogs, eat, cheese]. Context window = 1 (immediate left and right neighbours), giving a symmetric 6×6 co-occurrence matrix C. For PMI use N = total of all matrix entries and row sums as word counts.",q:[
+["E","What is C[chase, cats]?",["2","1","3","0"],0,"'cats chase' in sentence 1 and 'chase cats' in sentence 2 each add one, so the count is 2."],
+["M","'cats' and 'dogs' never appear next to each other. What can we say about their row vectors?",["They have positive cosine similarity because both co-occur with 'chase'","Their cosine similarity is 0 because they never co-occur","Their cosine similarity is negative","Cosine similarity is undefined"],0,"cats = (chase: 2), dogs = (chase: 1), so they are parallel (cosine 1). One-hot vectors would give 0."],
+["M","Using N = 12 and row sums as counts, what is PMI(chase, cats)?",["log 3","log 1.5","log 6","log 0.75"],0,"count(chase, cats) = 2, count(chase) = 4, count(cats) = 2. PMI = log(2·12 / (4·2)) = log 3."],
+["M","SVD on this 6×6 matrix keeping k = 2. What is the size of U_kΣ_k, and the dimension of each word vector?",["6×2 and 2","2×2 and 2","6×6 and 6","2×6 and 6"],0,"Word vectors are the rows of U_kΣ_k: one row per word, k columns."],
+["H","Skip-gram with negative sampling trains on the pair (cats, chase) using 5 negative samples. Which is the objective for this pair?",["Maximize log σ(u_chase·v_cats) + Σ over 5 sampled r of log σ(−u_r·v_cats)","Minimize cross-entropy of a softmax over all 6 words","Maximize only log σ(u_chase·v_cats) and ignore negatives","Minimize (v_i·v_j + b_i + b_j − log X_ij)²"],0,"Negative sampling turns the |V|-way softmax into 1 positive plus k negative binary classifications. The weighted squared-error option is GloVe."]]}
+]},
+{id:"m2",name:"Mock 2: Perceptron, Backprop, PCA/SVD, Autoencoders & Bias-Variance",mins:60,cases:[
+{t:"Case Study 1: Perceptron and McCulloch-Pitts units",x:"A perceptron outputs 1 if w·x + b ≥ 0, else 0. It uses w = (1, 1) and b = −1.5 on binary inputs (x₁, x₂).",q:[
+["E","Which logic function does it compute?",["AND","OR","XOR","NAND"],0,"Only (1,1) gives 2 − 1.5 = 0.5 ≥ 0, so it is AND."],
+["M","With the same weights, which bias makes it compute OR?",["−0.5","−1.5","−2.5","+0.5"],0,"b = −0.5: (1,0) gives 0.5 → 1 and (0,0) gives −0.5 → 0. b = +0.5 would fire on (0,0)."],
+["M","Perceptron learning, labels ±1, w = (0, 0). Sample x = (1, 2), y = +1 gives y(w·x) = 0 ≤ 0, so w ← w + yx =",["(1, 2)","(0, 0)","(−1, −2)","(2, 1)"],0,"w = (0,0) + (+1)(1,2) = (1,2)."],
+["E","Why can a single perceptron not compute XOR?",["No single line separates (0,1),(1,0) from (0,0),(1,1)","It has too few inputs","The learning rate is too small","The weights must be larger"],0,"XOR is not linearly separable; it needs a hidden layer."],
+["H","An MP unit with 5 binary inputs fires if at least 3 are 1 (θ = 3). For how many of the 32 input patterns does it fire?",["16","10","5","26"],0,"C(5,3)+C(5,4)+C(5,5) = 10+5+1 = 16."]]},
+{t:"Case Study 2: Backpropagation on a linear two-layer net",x:"h = w₁x, ŷ = w₂h (no activations), loss L = ½(ŷ − y)². Take x = 2, y = 10, w₁ = 1, w₂ = 3, learning rate η = 0.1.",q:[
+["E","What is ŷ in the forward pass?",["6","4","10","12"],0,"h = 1·2 = 2, ŷ = 3·2 = 6."],
+["E","What is the loss L?",["8","16","4","6"],0,"L = ½(6 − 10)² = 8."],
+["M","What is ∂L/∂w₂?",["−8","−4","8","−12"],0,"∂L/∂ŷ = ŷ − y = −4 and ∂ŷ/∂w₂ = h = 2, so −8."],
+["H","What is ∂L/∂w₁?",["−24","−12","24","−8"],0,"(ŷ − y)·w₂·x = (−4)(3)(2) = −24."],
+["M","After one gradient step, w₁ becomes:",["3.4","−1.4","0.76","2.4"],0,"w₁ ← 1 − 0.1(−24) = 3.4. A negative gradient increases the weight."]]},
+{t:"Case Study 3: PCA, SVD and autoencoders",x:"A dataset's covariance matrix has eigenvalues 6, 3 and 1 with orthonormal eigenvectors. The same data also train autoencoders.",q:[
+["E","What fraction of variance does the first principal component capture?",["60%","30%","10%","90%"],0,"6 / (6+3+1) = 60%."],
+["M","How much variance do the first two components capture together?",["90%","60%","80%","67%"],0,"(6+3)/10 = 90%."],
+["E","A matrix has singular values 5, 3, 0, 0. Its rank is:",["2","4","3","8"],0,"Rank = number of nonzero singular values."],
+["H","An overcomplete autoencoder (200 hidden units, 100 inputs) is trained with plain reconstruction loss and no regularization. The main risk is:",["It copies the input (near-identity map) without learning useful features","It cannot reconstruct anything","It becomes exactly PCA","Its loss cannot go below 1"],0,"Extra capacity allows trivial copying. Sparse, denoising or contractive penalties prevent this."],
+["M","A sparse autoencoder has L = L_rec + λΩ with L_rec = 0.8, λ = 0.5, Ω = 1.2. What is L?",["1.4","2.0","0.8","1.0"],0,"0.8 + 0.5·1.2 = 1.4."]]},
+{t:"Case Study 4: Bias, variance and regularization",x:"A model trained on four different training sets predicts 40, 44, 46 and 50 for a test point whose true value is 42.",q:[
+["E","What is the bias of the model at this point?",["3","45","2","9"],0,"Mean prediction = 45, so bias = 45 − 42 = 3 (bias² = 9)."],
+["M","What is the variance of the predictions?",["13","3.25","6.5","52"],0,"Deviations from 45: −5, −1, 1, 5 → squares 25, 1, 1, 25 → mean 13."],
+["M","Ignoring irreducible noise, what is the expected squared error?",["22","16","13","9"],0,"Bias² + variance = 9 + 13 = 22."],
+["H","L = L_data + αw² with α = 0.1. At w = 5 the data gradient is 2. What is the total gradient?",["3","2.5","2.1","7"],0,"The penalty gradient is 2αw = 1, so 2 + 1 = 3."],
+["E","Dropout with keep probability 0.7 is applied to a 200-unit layer. How many units are active on average per training pass?",["140","70","60","200"],0,"0.7 × 200 = 140 (full network with scaling at test time)."]]}
+]},
+{id:"m3",name:"Mock 3: CNNs, RNN/LSTM/GRU, Attention & Mixed Review",mins:60,cases:[
+{t:"Case Study 1: CNN shapes and parameters",x:"Input is 64×64×3. Layer 1: 16 filters of 5×5, stride 1, no padding. Then 2×2 max pooling with stride 2. Layer 2: 32 filters of 3×3, stride 1, padding 1.",q:[
+["E","Output shape of layer 1?",["60×60×16","64×64×16","59×59×16","60×60×3"],0,"(64 − 5)/1 + 1 = 60; channels = number of filters."],
+["M","Number of parameters in layer 1 (with biases)?",["1216","1200","400","76"],0,"(5·5·3 + 1)·16 = 76·16 = 1216."],
+["E","Shape after pooling?",["30×30×16","60×60×8","30×30×8","15×15×16"],0,"Pooling halves height and width; channels unchanged."],
+["M","Shape after layer 2?",["30×30×32","28×28×32","30×30×16","32×32×32"],0,"(30 − 3 + 2)/1 + 1 = 30; 32 filters."],
+["H","Parameters in layer 2 (with biases)?",["4640","4608","9248","145"],0,"Each filter has 3·3·16 = 144 weights + 1 bias = 145; × 32 = 4640."]]},
+{t:"Case Study 2: Sequence model failures",x:"A vanilla RNN reads 100-word reviews and predicts sentiment at the end. In one run the loss stalls and early words are ignored. In another run the loss suddenly becomes NaN.",q:[
+["E","The stalled run is most likely caused by:",["Vanishing gradients through time","Too many labels","Exploding gradients","Too small a batch size"],0,"Repeated multiplication shrinks gradients, so early steps get almost no signal."],
+["E","The NaN run is best addressed by:",["Gradient clipping","Removing the loss","Zero initialization","Removing all biases"],0,"Exploding gradients are fixed by capping the gradient norm."],
+["M","In an LSTM, a forget gate value near 0 means:",["The old cell state is mostly discarded","The new input is ignored","The output is fully exposed","The cell state is copied unchanged"],0,"s_t = f⊙s_{t−1} + i⊙s̃_t, so f ≈ 0 erases memory."],
+["M","LSTM: f = 0.5, s_{t−1} = 4, i = 0.2, candidate = 3. What is s_t = f·s_{t−1} + i·candidate?",["2.6","2.3","2.0","0.6"],0,"0.5·4 + 0.2·3 = 2 + 0.6 = 2.6."],
+["H","In a GRU, a reset gate near 0 means:",["The candidate state is built mostly from the current input, ignoring the past","The previous state is copied unchanged","All gates are closed and learning stops","The input is ignored"],0,"Reset controls how much past state feeds the candidate. Copying the old state is the update gate's job."]]},
+{t:"Case Study 3: Attention",x:"A decoder attends over 4 encoder states with scalar values h = 10, 20, 30, 40. After softmax the attention weights are 0.1, 0.2, 0.3, 0.4.",q:[
+["E","Main reason attention helps with long sentences:",["The decoder can look at relevant encoder states instead of one fixed summary vector","It removes the decoder","It shortens the input","It stops gradients flowing"],0,"A single fixed vector loses early details; attention gives direct access."],
+["M","What is the context vector (weighted sum of encoder states)?",["30","25","40","10"],0,"1 + 4 + 9 + 16 = 30. The plain average (25) ignores the weights."],
+["E","Why is softmax applied to attention scores?",["Weights become non-negative and sum to 1","It makes all weights equal","It sorts the states","It adds positional information"],0,"Softmax turns scores into a probability-like weighting."],
+["M","A raw dot-product score is 16 and d_k = 64. The scaled score is:",["2","0.25","16","8"],0,"Divide by √d_k = 8, giving 2. Scaling keeps softmax from saturating."],
+["H","Without positional encoding, self-attention on 'dog bites man' and 'man bites dog' would:",["Treat them as the same set of tokens (outputs only permuted)","Always give opposite outputs","Fail to compute attention","Ignore the verb"],0,"Self-attention has no built-in sense of order; positional encodings inject it."]]},
+{t:"Case Study 4: Mixed troubleshooting",x:"A mixed round across activations, residual networks, optimizers and embeddings.",q:[
+["M","The maximum derivative of a sigmoid is 0.25. What is the upper bound on the product of its derivatives across 3 layers?",["0.0156","0.75","0.0625","0.25"],0,"0.25³ ≈ 0.0156, so gradients shrink quickly with depth."],
+["E","A ReLU neuron outputs 0 for every input and never recovers. A standard fix is:",["Leaky ReLU","Zero initialization","A larger learning rate","Removing the bias"],0,"Leaky ReLU keeps a small gradient for negative inputs."],
+["M","For a residual block H(x) = F(x) + x, dH/dx equals:",["F′(x) + 1","F′(x)","1 − F′(x)","F′(x)·x"],0,"The +1 gives gradients a direct path, which lets very deep nets train."],
+["E","Which optimizer accumulates squared gradients without decay, so its effective learning rate keeps shrinking?",["AdaGrad","RMSProp","Adam","Momentum"],0,"RMSProp and Adam decay the history; AdaGrad does not."],
+["H","PPMI + SVD embeddings with |V| = 50,000 and k = 300. Which pair gives the PPMI matrix size and the embedding matrix size?",["50,000×50,000 and 50,000×300","300×300 and 50,000×300","50,000×300 and 300×300","300×50,000 and 300×50,000"],0,"PPMI is |V|×|V|. Truncated SVD keeps k columns, so U_kΣ_k is 50,000×300."]]}
+]},
+{id:"m4",name:"Mock 4: Final Full Paper (formulas given, 75 questions)",mins:120,cases:[
+{t:"Case Study 1: Optimizers on L(w) = w²",x:"Gradient g = 2w. NAG: g is evaluated at the look-ahead point w_{t−1} − γv_{t−1}. AdaGrad: r_t = r_{t−1} + g², step = ηg/√r_t. RMSProp: r_t = βr_{t−1} + (1−β)g², same step. Start at w₀ = 4 with η = 0.1. Momentum: v_t = γv_{t−1} + ηg_t, w_t = w_{t−1} − v_t.",q:[
+["E","Plain GD gives w₁ =",["3.2","0.8","4.8","3.6"],0,"g = 8, w₁ = 4 − 0.8 = 3.2."],
+["H","Momentum with γ = 0.5 gives w₂ =",["2.16","2.56","1.52","2.0"],0,"v₁ = 0.8, w₁ = 3.2, g = 6.4, v₂ = 0.4 + 0.64 = 1.04, w₂ = 2.16. Plain GD gives 2.56."],
+["M","AdaGrad's first step (η = 0.1, ε ignored) changes w by:",["0.1","0.8","8","0.01"],0,"r = g², so step = ηg/|g| = η = 0.1 whatever the gradient size."],
+["M","RMSProp with β = 0.9 takes its first step. Compared with AdaGrad's 0.1, the step is:",["Larger, about 0.32","The same, 0.1","Smaller, about 0.03","0.8"],0,"r₁ = 0.1·64 = 6.4, √r₁ ≈ 2.53, step = 0.8/2.53 ≈ 0.32."],
+["H","NAG (γ = 0.5, η = 0.1) on L = w², gradient 2w, from w₀ = 4 with v₀ = 0. What is w after two steps?",["2.24","2.16","2.56","1.52"],0,"Step 1: g = 8, v = 0.8, w = 3.2. Step 2 looks ahead first, so g = 5.6 and v = 0.96, giving 2.24 (momentum gives 2.16). Look-ahead point = w − γv."]]},
+{t:"Case Study 2: Initialization and activations",x:"A tanh network where each neuron has n = 50 inputs is initialized in several ways. Given: Xavier Var(w) = 1/n, He Var(w) = 2/n; batch norm: ŝ = (s − μ)/√(σ² + ε), y = γŝ + β.",q:[
+["E","Xavier variance Var(w) =",["0.02","0.04","0.2","0.01"],0,"1/n = 1/50 = 0.02."],
+["E","He variance Var(w) =",["0.04","0.02","0.4","0.1"],0,"2/n = 2/50 = 0.04."],
+["M","Every weight and bias is initialized to 0. What happens?",["Hidden units in a layer stay identical (symmetry never breaks), so training is ineffective","It trains normally because tanh(0) = 0","Gradients explode","Only the first layer learns"],0,"Identical units receive identical gradients, so they never differentiate."],
+["E","Which activation is zero-centred but still saturates?",["tanh","sigmoid","ReLU","Leaky ReLU"],0,"Sigmoid is not zero-centred; ReLU does not saturate for x > 0."],
+["H","Batch norm on pre-activations 4 and 8 with γ = 2, β = 1 (ε ignored). The output for 8 is:",["3","2","1","5"],0,"Mean 6, variance 4, normalized (8−6)/2 = 1, output 2·1 + 1 = 3."]]},
+{t:"Case Study 3: Embeddings from a toy corpus",x:"Corpus: 'I like deep learning', 'I like NLP', 'I enjoy flying'. Window = 1, symmetric co-occurrence matrix. For PMI use N = total of all entries (14) and row sums as word counts. Given: PMI(w,c) = log[count(w,c)·N / (count(w)·count(c))], PPMI = max(PMI, 0).",q:[
+["E","C[I, like] =",["2","1","3","0"],0,"'I like' occurs in two sentences."],
+["M","The row sum (count) of 'like' is:",["4","3","2","5"],0,"I: 2, deep: 1, NLP: 1, total 4."],
+["H","PMI(I, like) =",["log(7/3)","log(7/6)","log 2","log(14/3)"],0,"count(I) = 3, count(like) = 4: log(2·14/(3·4)) = log(7/3)."],
+["M","A word pair has PMI = −1.2. Its PPMI is:",["0","−1.2","1.2","Undefined"],0,"PPMI = max(PMI, 0)."],
+["M","Skip-gram with window 1 on 'I like deep learning': how many (centre, context) pairs have 'like' as centre?",["2","1","3","4"],0,"like→I and like→deep."]]},
+{t:"Case Study 4: CNN pipeline",x:"Input 28×28×1. Conv1: 8 filters 5×5, stride 1, no padding. 2×2 max pool, stride 2. Conv2: 16 filters 3×3, stride 2, padding 1. Then flatten and a dense layer to 10 outputs. Given: output size = floor((W − F + 2P)/S) + 1; parameters per conv filter = F·F·C_in + 1.",q:[
+["E","Shape after Conv1:",["24×24×8","28×28×8","23×23×8","24×24×1"],0,"(28 − 5) + 1 = 24."],
+["M","Parameters in Conv1 (with biases):",["208","200","25","8"],0,"(5·5·1 + 1)·8 = 208."],
+["M","Shape after pooling and Conv2:",["6×6×16","12×12×16","5×5×16","6×6×8"],0,"Pool → 12×12×8. Conv2: (12 − 3 + 2)/2 + 1 = 6 (floor), 16 filters."],
+["M","Length of the flattened vector:",["576","256","96","1152"],0,"6·6·16 = 576."],
+["M","Parameters in the dense layer to 10 outputs (with biases):",["5770","5760","576","586"],0,"576·10 + 10 = 5770."]]},
+{t:"Case Study 5: Overfitting diagnostics",x:"A classifier trains for 30 epochs. Training loss falls from 0.9 to 0.05. Validation loss falls until epoch 10, then rises. Final training accuracy is 99%, validation accuracy 70%. Note: averaging k independent models with equal bias and variance σ² gives variance σ²/k and the same bias.",q:[
+["E","The cheapest effective response is:",["Stop near epoch 10 (early stopping)","Train for 100 more epochs","Remove the validation set","Increase model size"],0,"Validation loss is lowest near epoch 10."],
+["M","This pattern indicates:",["High variance (overfitting)","High bias (underfitting)","Vanishing gradients","A learning rate of zero"],0,"Low training error with a large train-validation gap means high variance."],
+["M","There are 500 images and each gets 3 augmented copies (originals kept). The new training set has:",["2000","1500","500","3000"],0,"500 + 3·500 = 2000."],
+["M","Which penalty tends to drive some weights exactly to zero?",["L1","L2","Dropout","Early stopping"],0,"L1 gives sparse weights; L2 shrinks them smoothly."],
+["M","Five independent models, each with variance 10 and equal bias, are averaged. The variance of the average is:",["2","10","50","0.4"],0,"Independent errors: 10/5 = 2. Bias is unchanged."]]},
+{t:"Case Study 6: LSTM and GRU",x:"A sequence model is built with LSTM and GRU cells. The forget gate f_t = σ(W_f h_{t−1} + U_f x_t + b_f) lies in (0,1): near 1 it keeps old memory, near 0 it erases it. Cell state s_t = f⊙s_{t−1} + i⊙s̃_t.",q:[
+["E","LSTM gate values lie in:",["(0, 1)","(−1, 1)","(0, ∞)","Any real number"],0,"Gates are sigmoids."],
+["M","f = 0.9, s_{t−1} = 10, i = 0.1, s̃_t = 5. Then s_t =",["9.5","9.0","10","5.5"],0,"0.9·10 + 0.1·5 = 9.5."],
+["E","If the output gate o_t = 0, then h_t is:",["0, even if the cell state is large","Equal to s_t","Equal to s_{t−1}","Undefined"],0,"h_t = o_t ⊙ σ(s_t) = 0."],
+["H","Truncated BPTT with window 5 on a length-100 sequence uses how many windows, and what is the limitation?",["20 windows; gradients cannot link events more than 5 steps apart","5 windows; it cannot clip gradients","100 windows; it only fixes vanishing gradients","20 windows; it fixes both vanishing and exploding gradients"],0,"100/5 = 20. Truncation cuts the gradient path, so long-range dependencies are not learned."],
+["M","With equal input and hidden sizes, LSTM has how many times the parameters of a GRU?",["4/3","3/4","2","1"],0,"LSTM has 4 weight blocks (3 gates + candidate), GRU has 3."]]},
+{t:"Case Study 7: Attention",x:"A decoder attends over 4 encoder states. Multi-head attention uses d_model = 512. Given: weights = softmax(score/√d_k), softmax(z_i) = e^{z_i}/Σe^{z_j}, d_k = d_model/heads.",q:[
+["E","The fixed-vector bottleneck in seq2seq is solved by:",["Attention over encoder states","Zero initialization","Shorter decoders","Removing the encoder"],0,"The decoder reads relevant encoder states directly."],
+["E","If all 4 scores are equal, each softmax weight is:",["0.25","1","0","0.5"],0,"Equal scores give uniform weights summing to 1."],
+["M","With 8 heads and d_model = 512, each head has d_k =",["64","8","512","4096"],0,"512/8 = 64."],
+["H","Scores are [4, 0] and d_k = 16. After scaling by √d_k and softmax, the first weight is about:",["0.73","0.98","0.50","0.27"],0,"Scaled scores [1, 0]: e/(e + 1) ≈ 0.73. Without scaling it would be 0.98."],
+["M","In hierarchical attention, sentence weights are nearly uniform (0.25 each over 4 sentences). This suggests:",["The sentence level is not discriminating between sentences","The model is perfectly selective","Word attention is broken","Positional encoding is missing"],0,"Near-uniform weights mean no sentence is being singled out as informative."]]},
+{t:"Case Study 8: A short history of neural networks",x:"A student prepares a seminar on the history of neural networks.",q:[
+["E","Which 1969 result is linked to the first AI winter?",["Minsky and Papert showed a single-layer perceptron cannot learn XOR","Backpropagation was published","AlexNet won ImageNet","Dropout was introduced"],0,"The limitation of single-layer perceptrons dampened funding and interest."],
+["E","Which 1986 idea made multi-layer networks practical to train?",["Backpropagation","The McCulloch-Pitts neuron","Dropout","Batch normalization"],0,"Backprop applies the chain rule to compute all gradients efficiently."],
+["E","Which 2006 idea revived deep networks?",["Unsupervised layer-wise pre-training","The perceptron","Gradient clipping","The Gram matrix"],0,"Hinton and Salakhutdinov showed pre-training gives good initializations."],
+["M","What is the key difference between the McCulloch-Pitts neuron and the perceptron?",["The perceptron has learnable weights and a bias; the MP neuron's are fixed","The MP neuron has learnable weights","The perceptron uses binary outputs only","The MP neuron can solve XOR"],0,"MP units are hand-set; the perceptron learns its weights."],
+["M","An MP neuron has an inhibitory input that is currently active. Its output is:",["0, whatever the other inputs are","1, whatever the other inputs are","The sum of the inputs","Equal to the threshold"],0,"An active inhibitory input acts as a veto."]]},
+{t:"Case Study 9: Softmax, cross-entropy and backprop",x:"A 3-class classifier outputs ŷ = (0.2, 0.7, 0.1) and the true class is class 2, so e = (0, 1, 0). Given: L = −log ŷ_true (natural log); for softmax + cross-entropy, ∂L/∂a = ŷ − e. Backprop to the previous layer uses ∂L/∂h = Wᵀ(∂L/∂a). Here W is 3×4 with rows (1,0,2,0), (0,1,0,1), (1,1,0,0).",q:[
+["E","The loss L is about:",["0.36","0.70","1.20","0.10"],0,"−ln 0.7 ≈ 0.357."],
+["E","∂L/∂a =",["(0.2, −0.3, 0.1)","(0.2, 0.7, 0.1)","(−0.2, 0.3, −0.1)","(0, 1, 0)"],0,"ŷ − e = (0.2, 0.7 − 1, 0.1)."],
+["M","The three components of ∂L/∂a sum to:",["0","0.3","1","−0.3"],0,"0.2 − 0.3 + 0.1 = 0, because ŷ and e each sum to 1."],
+["M","The gradient passed back to the 4 hidden units is a vector of length:",["4","3","12","1"],0,"Wᵀ is 4×3, times a 3-vector gives a 4-vector."],
+["H","What is ∂L/∂h for hidden unit 3?",["0.4","0.3","−0.2","0.2"],0,"Column 3 of W is (2, 0, 0), so 2·0.2 = 0.4."]]},
+{t:"Case Study 10: Reducing overfitting",x:"A team compares ways to reduce overfitting. Given: for a linear model, adding Gaussian input noise of variance σ² is equivalent to adding the penalty σ²·Σw².",q:[
+["E","That penalty corresponds to:",["L2 regularization","L1 regularization","Dropout","Early stopping"],0,"A penalty on Σw² is L2."],
+["M","w = (3, −4) and σ² = 0.1. The penalty is:",["2.5","0.7","25","0.25"],0,"0.1·(9 + 16) = 2.5."],
+["E","Early stopping with patience p = 3 stops training when:",["Validation error has not improved for 3 consecutive epochs","Training loss reaches zero","3 epochs have passed","Validation error rises once"],0,"Patience is how many epochs to wait for an improvement."],
+["M","Weight tying sets W_dec = W_encᵀ. If the encoder weights form a 100×30 matrix, how many decoder weights are saved?",["3000","30","100","6000"],0,"The decoder would otherwise need its own 30×100 = 3000 weights."],
+["H","Four models predict 8, 10, 12, 14 for a point whose true value is 10. The squared error of their average and the average squared error of the individual models are:",["1 and 6","1 and 4","6 and 1","4 and 4"],0,"Average = 11, so error 1. Individual errors: 4, 0, 4, 16, mean 6. Averaging beats the typical member."]]},
+{t:"Case Study 11: Designing a CNN",x:"A team designs a CNN. Given: output size = floor((W − F + 2P)/S) + 1; parameters per conv filter = F·F·C_in + 1.",q:[
+["E","Parameter sharing means:",["The same filter weights are reused at every spatial position","Every neuron has its own weights","Weights are shared between different layers","All weights are zero"],0,"It cuts the parameter count and gives translation equivariance."],
+["E","How many learnable parameters does a pooling layer have?",["0","1","F·F","One per channel"],0,"Pooling is a fixed operation."],
+["M","Input 32×32×3, 10 filters of 5×5, stride 1, padding 2. The output shape is:",["32×32×10","28×28×10","36×36×10","32×32×3"],0,"(32 − 5 + 4)/1 + 1 = 32; 10 filters."],
+["M","Parameters in that layer:",["760","750","250","76"],0,"(5·5·3 + 1)·10 = 760."],
+["H","Two stacked 3×3 convolutions (stride 1, no padding): each output neuron of the second layer sees an input patch of:",["5×5","6×6","9×9","3×3"],0,"Each 3×3 layer adds 2 to the receptive field: 3 → 5."]]},
+{t:"Case Study 12: Looking inside a CNN",x:"A team inspects what a trained CNN relies on.",q:[
+["E","Covering an image patch makes the class probability drop sharply. That patch is:",["Important for the prediction","Irrelevant","A bias term","Always noise"],0,"This is the occlusion experiment: a big drop means the region matters."],
+["H","Guided backpropagation differs from ordinary backprop through a ReLU because it also:",["Zeroes negative gradients on the backward pass","Uses a different forward activation","Averages gradients over many images","Only runs on the last layer"],0,"It keeps only positive gradients where the ReLU was active, giving sharper maps."],
+["M","In neural style transfer, the style of an image is captured by:",["The Gram matrix of feature maps","The Hessian","The class label","The pooling stride"],0,"Gram matrices record correlations between feature maps, i.e. texture."],
+["M","In optimization over images (e.g. Deep Dream), what is updated?",["The pixels, with the network weights fixed","The network weights, with the pixels fixed","The learning rate","The labels"],0,"The image is the variable being optimized."],
+["E","A residual block H(x) = F(x) + x mainly solves:",["The degradation problem in very deep networks","Overfitting","Slow pooling","Missing padding"],0,"Skip connections let very deep nets train, giving gradients a direct path."]]},
+{t:"Case Study 13: Long sequences",x:"A team trains RNNs and LSTMs on long sequences. Given: the backward gradient across k steps scales like (λγ)^k, where λ bounds the recurrent weight norm and γ bounds the activation derivative; along the LSTM cell-state path ∂s_t/∂s_{t−1} = f_t.",q:[
+["E","If λγ < 1, gradients from distant steps:",["Vanish","Explode","Stay constant","Become negative"],0,"A factor below 1 shrinks exponentially with k."],
+["M","λγ = 0.9 over 10 steps gives a factor of about:",["0.35","0.9","0.09","3.5"],0,"0.9^10 ≈ 0.349."],
+["M","λγ = 1.2 over 10 steps gives a factor of about:",["6.2","1.2","12","0.16"],0,"1.2^10 ≈ 6.19, so gradients explode. Clipping is the fix."],
+["H","An LSTM keeps f_t = 0.99 for 10 steps while a vanilla RNN has λγ = 0.5. The backward factors are about:",["0.90 and 0.001","0.90 and 0.90","0.10 and 0.001","0.001 and 0.90"],0,"0.99^10 ≈ 0.90 while 0.5^10 ≈ 0.001. The LSTM gradient fades only if the gate chooses to forget."],
+["E","Gradient clipping mainly addresses:",["Exploding gradients","Vanishing gradients","Overfitting","Dead ReLUs"],0,"It caps the gradient norm."]]},
+{t:"Case Study 14: Attention and embeddings",x:"A team builds a translation model with attention. Given: context c_t = Σ α_i h_i, with α = softmax(scores).",q:[
+["E","The context vector is:",["A weighted sum of encoder states","The last decoder state","A random vector","The input embedding"],0,"Weights come from the softmax of the scores."],
+["M","Two scores are 0 and ln 3 (about 1.1). The attention weights are:",["(0.25, 0.75)","(0.5, 0.5)","(0.1, 0.9)","(0.33, 0.67)"],0,"e^0 = 1, e^(ln 3) = 3, sum 4, so 0.25 and 0.75."],
+["M","With weights (0.25, 0.75) and states h₁ = 8, h₂ = 4, the context is:",["5","6","4","12"],0,"0.25·8 + 0.75·4 = 2 + 3 = 5."],
+["E","CBOW predicts:",["The centre word from its context words","The context words from the centre word","The next sentence","The document class"],0,"Skip-gram does the reverse."],
+["H","Levy and Goldberg showed skip-gram with negative sampling implicitly factorizes:",["A shifted PMI matrix","The raw co-occurrence counts","The covariance of the embeddings","An identity matrix"],0,"This links word2vec to count-based PMI + SVD methods."]]},
+{t:"Case Study 15: Early-week fundamentals",x:"Questions on sigmoid units, perceptrons, PCA and SVD. Given: σ(z) = 1/(1+e^{−z}), σ′ = σ(1−σ); PCA variance share = λ_i/Σλ; SVD energy kept = Σσ_i² (kept)/Σσ_i² (all).",q:[
+["E","A sigmoid output unit has z = 0. Its output is:",["0.5","0","1","0.25"],0,"σ(0) = 0.5."],
+["H","With ŷ = σ(z) = 0.5, y = 1 and L = ½(ŷ − y)², ∂L/∂z =",["−0.125","−0.5","0.125","−0.25"],0,"(ŷ − y)·ŷ(1 − ŷ) = (−0.5)(0.25) = −0.125."],
+["M","A perceptron has w = (2, −1), b = −1 and fires when w·x + b ≥ 0. Its output for x = (1, 1) is:",["1","0","−1","2"],0,"2 − 1 − 1 = 0 ≥ 0, so it fires."],
+["E","Covariance eigenvalues are 8 and 2. The first PC explains:",["80%","20%","50%","100%"],0,"8/10 = 80%."],
+["H","Singular values are 4, 3, 2, 1. The share of squared-singular-value energy kept by the rank-2 approximation is:",["83.3%","70%","75%","50%"],0,"(16 + 9)/(16 + 9 + 4 + 1) = 25/30 ≈ 83.3%."]]}
+]}];
+const $=s=>document.querySelector(s),LV={E:"Easy",M:"Medium",H:"Hard"};
+let S=null,tm=null,F="all",lt=Date.now();const fmt=s=>{s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
+const ld=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const flat=t=>t.cases.flatMap(c=>c.q.map(q=>{let h=0;for(const ch of q[1])h=(h*31+ch.charCodeAt(0))>>>0;const ix=q[2].map((_,i)=>i).sort((a,b)=>((a*7+h)%11)-((b*7+h)%11)||a-b);return{c,l:q[0],q:q[1],o:ix.map(i=>q[2][i]),a:ix.indexOf(q[3]),e:q[4]}}));
+const pst=()=>sv("dl_run_"+S.id,{id:S.id,ans:S.ans,fl:S.fl,i:S.i,end:S.end,done:S.done,qt:S.qt});
+const score=()=>S.qs.reduce((a,q,k)=>a+(S.ans[k]==q.a?1:0),0);
+function home(){clearInterval(tm);S=null;const h=ld("dl_hist")||[];
+$("#app").innerHTML=`<h1>Deep Learning Mock Tests</h1><p class="mu">NPTEL-style case studies, all MCQ, 1 mark each, mixed difficulty. The timer keeps running if you leave. Progress is saved on this device.</p>`+T.map(t=>{const n=t.cases.reduce((a,c)=>a+c.q.length,0),r=ld("dl_run_"+t.id),last=h.filter(x=>x.id==t.id).slice(-3).map(x=>x.s+"/"+x.n).join(", "),ip=r&&!r.done;
+return `<div class="cd"><b>${t.name}</b><div class="mu">${n} questions · ${t.mins} min · ${t.cases.length} case studies${last?" · past scores: "+last:""}</div><button class="pri" onclick="start('${t.id}')">${ip?"Resume":"Start"}</button>${ip?`<button onclick="start('${t.id}',1)">Restart</button>`:""}</div>`}).join("")}
+function start(id,fresh){const t=T.find(x=>x.id==id),qs=flat(t);let r=fresh?null:ld("dl_run_"+id);
+if(!r||r.done||r.ans.length!=qs.length)r={id,ans:qs.map(()=>-1),fl:qs.map(()=>0),i:0,end:Date.now()+t.mins*60000,done:false};
+r.qt=r.qt||qs.map(()=>0);S=Object.assign(r,{t,qs});lt=Date.now();pst();exam()}
+function exam(){const q=S.qs[S.i],n=S.qs.length;
+$("#app").innerHTML=`<div class="bar"><span>Q ${S.i+1}/${n}<br><small class="mu" id="qt"></small></span><span style="text-align:center"><b id="tm"></b><br><small class="mu" id="sp"></small></span><button id="sub" class="pri" onclick="sub()">Submit</button></div>
+<div class="prog"><i style="width:${100*S.ans.filter(a=>a>=0).length/n}%"></i></div><div class="cd"><b>${q.c.t}</b><p>${q.c.x}</p></div>
+<div class="cd"><p class="q">${q.q}</p>${q.o.map((o,j)=>`<button class="opt${S.ans[S.i]==j?" sel":""}" onclick="pick(${j})">${"ABCD"[j]}. ${o}</button>`).join("")}<div class="row"><button onclick="pick(-1)">Clear</button><button onclick="flag()">${S.fl[S.i]?"Unflag":"Flag for review"}</button></div></div>
+<div class="row"><button onclick="go(-1)">◀ Prev</button><button onclick="go(1)">Next ▶</button></div>
+<div class="pal">${S.qs.map((_,k)=>`<button class="${k==S.i?"cur ":""}${S.ans[k]>=0?"dn ":""}${S.fl[k]?"fg":""}" onclick="jump(${k})">${k+1}</button>`).join("")}</div>
+<p class="mu">Blue = answered · amber outline = flagged</p>`;
+tick();clearInterval(tm);tm=setInterval(tick,1000)}
+function tick(){const r=Math.max(0,Math.round((S.end-Date.now())/1000)),e=$("#tm");
+if(e)e.textContent=`${Math.floor(r/3600)}:${String(Math.floor(r/60)%60).padStart(2,"0")}:${String(r%60).padStart(2,"0")}`;const qe=$("#qt"),pe=$("#sp");if(qe)qe.textContent="this Q "+fmt((S.qt[S.i]||0)+(Date.now()-lt)/1000);if(pe)pe.textContent="spent "+fmt(S.t.mins*60-r);if(r<=0&&!S.done)finish()}
+function keep(f){const y=scrollY;f();pst();exam();scrollTo(0,y)}
+function pick(j){keep(()=>S.ans[S.i]=(S.ans[S.i]==j?-1:j))}
+function flag(){keep(()=>S.fl[S.i]^=1)}
+function acc(){S.qt[S.i]=(S.qt[S.i]||0)+(Date.now()-lt)/1000;lt=Date.now()}
+function go(d){acc();S.i=Math.min(S.qs.length-1,Math.max(0,S.i+d));pst();exam();scrollTo(0,0)}
+function jump(k){acc();S.i=k;pst();exam();scrollTo(0,0)}
+function sub(){const b=$("#sub");if(b.dataset.s){finish();return}const un=S.ans.filter(a=>a<0).length;b.dataset.s=1;b.textContent=un?`${un} unanswered. Tap again`:"Tap again to submit";setTimeout(()=>{const c=$("#sub");if(c){c.dataset.s="";c.textContent="Submit"}},4000)}
+function finish(){acc();clearInterval(tm);S.done=true;pst();const h=ld("dl_hist")||[];h.push({id:S.id,s:score(),n:S.qs.length,d:Date.now()});sv("dl_hist",h);F="all";result()}
+function result(){const n=S.qs.length,s=score(),L={E:[0,0],M:[0,0],H:[0,0]},tt=(S.qt||[]).reduce((a,b)=>a+b,0),p=s/n,msg=p>=.9?"🎉 Outstanding accuracy! Congratulations, you are exam-ready.":p>=.75?"👏 Excellent accuracy! Congratulations, you clearly know this material.":p>=.6?"👍 Solid work! A quick look at the explanations and you are set.":"💪 Good effort. Review the explanations below, you are closer than you think.";
+S.qs.forEach((q,k)=>{L[q.l][1]++;if(S.ans[k]==q.a)L[q.l][0]++});
+const rv=S.qs.map((q,k)=>({q,k})).filter(({q,k})=>F=="all"||S.ans[k]!=q.a).map(({q,k})=>{const a=S.ans[k],st=a<0?"Skipped":a==q.a?"Correct":"Wrong";
+return `<div class="cd"><span class="mu">Q${k+1} · ${st} · ${fmt(S.qt[k]||0)}</span><span class="tag">${LV[q.l]}</span><p class="mu">${q.c.t}</p><p class="q">${q.q}</p>${q.o.map((o,j)=>`<div class="opt ${j==q.a?"ok":j==a?"no":""}" style="cursor:default">${"ABCD"[j]}. ${o}</div>`).join("")}<div class="ex">${q.e}</div></div>`}).join("");
+$("#app").innerHTML=`<h1>${S.t.name}</h1><div class="cd hero"><div class="big">${s} / ${n}</div><div class="msg">${msg}</div><div class="mu">${Math.round(100*s/n)}% accuracy · total time ${fmt(tt)} · avg ${fmt(tt/n)} per question</div><table>${Object.keys(L).map(k=>`<tr><th>${LV[k]}</th><td>${L[k][0]} / ${L[k][1]}</td></tr>`).join("")}</table></div>
+<div class="row"><button class="pri" onclick="home()">Home</button><button onclick="start('${S.id}',1)">Retake</button><button onclick="F=F=='all'?'wrong':'all';result()">${F=="all"?"Show only wrong/skipped":"Show all"}</button></div>${rv}`}
+home();
+</script></body></html>
